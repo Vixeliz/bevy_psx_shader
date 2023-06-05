@@ -46,12 +46,8 @@ fn setup(
         MaterialMeshBundle {
             mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
             material: materials.add(PsxMaterial {
-                color: Color::rgb(1.0, 1.0, 1.0),
                 color_texture: Some(asset_server.load("crate.png")),
-                alpha_mode: AlphaMode::Opaque,
-                fog_color: Color::WHITE,
-                snap_amount: 3.0,
-                fog_distance: Vec2::new(10.0, 25.0),
+                ..Default::default()
             }),
             transform,
             ..default()

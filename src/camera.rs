@@ -13,8 +13,6 @@ use bevy::{
     window::PrimaryWindow,
 };
 
-use crate::material::{PsxDitherMaterial, PSX_DITHER_HANDLE};
-
 #[derive(Component)]
 pub struct PsxCamera {
     pub size: UVec2,
@@ -86,7 +84,7 @@ pub fn setup_camera(
     mut commands: Commands,
     mut camera: Query<(&mut PsxCamera, Entity)>,
     mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<PsxDitherMaterial>>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
     mut images: ResMut<Assets<Image>>,
 ) {
     for (mut pixel_camera, entity) in camera.iter_mut() {
@@ -164,10 +162,9 @@ pub fn setup_camera(
             commands.spawn((
                 MaterialMesh2dBundle {
                     mesh: quad_handle.into(),
-                    material: materials.add(PsxDitherMaterial {
-                        color_texture: Some(image_handle),
-                        dither_color_texture: Some(PSX_DITHER_HANDLE.typed()),
-                        dither_amount: 80.0,
+                    material: materials.add(ColorMaterial {
+                        texture: Some(image_handle),
+                        ..Default::default()
                     }),
                     transform: Transform { ..default() },
                     ..default()
