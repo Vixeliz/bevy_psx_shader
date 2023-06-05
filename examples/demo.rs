@@ -48,6 +48,7 @@ fn setup(
             material: materials.add(PsxMaterial {
                 color_texture: Some(asset_server.load("crate.png")),
                 banding_enabled: 0,
+                dither_amount: 48.0,
                 ..Default::default()
             }),
             transform,

@@ -60,7 +60,7 @@ impl Default for PsxMaterial {
             fog_color: Color::WHITE,
             snap_amount: 5.0,
             fog_distance: Vec2::new(25.0, 75.0),
-            dither_amount: 48.0,
+            dither_amount: 64.0,
             color_texture: None,
             alpha_mode: AlphaMode::Opaque,
             dither_color_texture: Some(PSX_DITHER_HANDLE.typed()),
