@@ -3,6 +3,9 @@
 
 struct PsxMaterial {
     color: vec4<f32>,
+    fog_color: vec4<f32>,
+    snap_amount: f32,
+    fog_distance: vec2<f32>
 };
 @group(1) @binding(0)
 var<uniform> material: PsxMaterial;
@@ -23,7 +26,6 @@ struct FragmentInput {
 
 @fragment
 fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
-    let fog_color = vec3<f32>(1.0, 1.0, 1.0);
     let output_color = material.color * textureSample(base_color_texture, base_color_sampler, in.uv / in.c_position.w);
-    return vec4(mix(output_color.rgb, fog_color, in.fog), 1.0);
+    return vec4(mix(output_color.rgb, material.fog_color.rgb, in.fog), 1.0);
 }

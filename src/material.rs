@@ -29,6 +29,13 @@ impl Material for PsxMaterial {
 pub struct PsxMaterial {
     #[uniform(0)]
     pub color: Color,
+    #[uniform(0)]
+    pub fog_color: Color,
+    #[uniform(0)]
+    pub snap_amount: f32,
+    #[uniform(0)]
+    pub fog_distance: Vec2,
+    /// First one is start second is end
     #[texture(1)]
     #[sampler(2)]
     pub color_texture: Option<Handle<Image>>,

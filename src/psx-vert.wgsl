@@ -1,8 +1,15 @@
 #import bevy_pbr::mesh_view_bindings
 #import bevy_pbr::mesh_bindings
 
-// @group(1) @binding(0)
-// var<uniform> material: CustomMaterial;
+struct PsxMaterial {
+    color: vec4<f32>,
+    fog_color: vec4<f32>,
+    snap_amount: f32,
+    fog_distance: vec2<f32>
+};
+
+@group(1) @binding(0)
+var<uniform> material: PsxMaterial;
 
 // NOTE: Bindings must come before functions that use them!
 #import bevy_pbr::mesh_functions
@@ -23,7 +30,7 @@ struct VertexOutput {
 fn vertex(vertex: Vertex) -> VertexOutput {
     var out: VertexOutput;
     let in_clip = mesh_position_local_to_clip(mesh.model, vertex.position);
-    let snap_scale = 5.0;
+    let snap_scale = material.snap_amount;
     var position = vec4(
         in_clip.x  / in_clip.w,
         in_clip.y  / in_clip.w,
@@ -42,9 +49,7 @@ fn vertex(vertex: Vertex) -> VertexOutput {
     out.clip_position = position;
     out.c_position = position;
     out.uv = vertex.uv * position.w;
-    let fog_start = 10.0;
-    let fog_end = 25.0;
-    out.fog = 1.0 - clamp((fog_end - depth) / (fog_end - fog_start), 0.0, 1.0);
+    out.fog = 1.0 - clamp((material.fog_distance.y - depth) / (material.fog_distance.y - material.fog_distance.x), 0.0, 1.0);
 
 
     return out;
