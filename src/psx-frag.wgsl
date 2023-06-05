@@ -75,8 +75,8 @@ fn yuv_to_rgb(yuva: vec4<f32>) -> vec4<f32> {
 
 @fragment
 fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
-    let col = in.vertex_color * material.color * textureSample(base_color_texture, base_color_sampler, in.uv / in.c_position.w);
-    // let col = textureSample(base_color_texture, base_color_sampler, in.uv);
+    let fir_col = in.vertex_color * material.color * textureSample(base_color_texture, base_color_sampler, in.uv / in.c_position.w);
+    let col = vec4(mix(fir_col.rgb, material.fog_color.rgb, in.fog), 1.0);
     var yuv = rgb_to_yuv(col);
 
     // Clamp the YUV color to specified color depth (default: 32, 5 bits per channel, as per playstation hardware)
@@ -104,7 +104,7 @@ fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
 
     let output_color = yuv_to_rgb(yuv);
 
-    return vec4(mix(output_color.rgb, material.fog_color.rgb, in.fog), 1.0);
+    return output_color;
 }
 
 
