@@ -6,7 +6,8 @@ struct PsxMaterial {
     fog_color: vec4<f32>,
     snap_amount: f32,
     fog_distance: vec2<f32>,
-    dither_amount: f32
+    dither_amount: f32,
+    banding_enabled: u32
 };
 @group(1) @binding(0)
 var<uniform> material: PsxMaterial;
@@ -88,7 +89,10 @@ fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
     
     // Calculate dither texture UV based on the input texture
     var ditherSize = dither_texel_size.y;
-    var ditherSteps = dither_texel_size.x/ditherSize;
+    var ditherSteps = 16.0;
+    if material.banding_enabled > 0u {
+        ditherSteps = dither_texel_size.x/ditherSize;
+    }
 
     var ditherBlockUV = in.uv;
     ditherBlockUV.x %= (ditherSize / main_texel_size.x);

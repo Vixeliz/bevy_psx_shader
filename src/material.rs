@@ -39,6 +39,8 @@ pub struct PsxMaterial {
     pub fog_distance: Vec2,
     #[uniform(0)]
     pub dither_amount: f32,
+    #[uniform(0)]
+    pub banding_enabled: u32,
 
     /// First one is start second is end
     #[texture(1)]
@@ -58,10 +60,11 @@ impl Default for PsxMaterial {
             fog_color: Color::WHITE,
             snap_amount: 5.0,
             fog_distance: Vec2::new(25.0, 75.0),
-            dither_amount: 128.0,
+            dither_amount: 48.0,
             color_texture: None,
             alpha_mode: AlphaMode::Opaque,
             dither_color_texture: Some(PSX_DITHER_HANDLE.typed()),
+            banding_enabled: 0,
         }
     }
 }
