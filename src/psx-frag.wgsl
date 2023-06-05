@@ -18,9 +18,12 @@ var base_color_sampler: sampler;
 struct FragmentInput {
     @location(0) c_position: vec4<f32>,
     @location(1) uv: vec2<f32>,
+    @location(2) fog: f32,
 };
 
 @fragment
 fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
-    return material.color * textureSample(base_color_texture, base_color_sampler, in.uv / in.c_position.w);
+    let fog_color = vec3<f32>(1.0, 1.0, 1.0);
+    let output_color = material.color * textureSample(base_color_texture, base_color_sampler, in.uv / in.c_position.w);
+    return vec4(mix(output_color.rgb, fog_color, in.fog), 1.0);
 }

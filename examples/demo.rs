@@ -53,7 +53,7 @@ fn setup(
             transform,
             ..default()
         },
-        // Rotates,
+        Rotates,
     ));
     // light
     commands.spawn(PointLightBundle {

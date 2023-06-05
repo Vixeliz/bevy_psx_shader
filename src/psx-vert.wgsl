@@ -16,13 +16,14 @@ struct VertexOutput {
     @builtin(position) clip_position: vec4<f32>,
     @location(0) c_position: vec4<f32>,
     @location(1) uv: vec2<f32>,
+    @location(2) fog: f32,
 };
 
 @vertex
 fn vertex(vertex: Vertex) -> VertexOutput {
     var out: VertexOutput;
     let in_clip = mesh_position_local_to_clip(mesh.model, vertex.position);
-    let snap_scale = 20.0;
+    let snap_scale = 5.0;
     var position = vec4(
         in_clip.x  / in_clip.w,
         in_clip.y  / in_clip.w,
@@ -36,9 +37,15 @@ fn vertex(vertex: Vertex) -> VertexOutput {
         in_clip.w
     );
 
+    let depth_vert = view.projection * vec4(position);
+    let depth = abs(depth_vert.z / depth_vert.w);
     out.clip_position = position;
     out.c_position = position;
     out.uv = vertex.uv * position.w;
+    let fog_start = 10.0;
+    let fog_end = 25.0;
+    out.fog = 1.0 - clamp((fog_end - depth) / (fog_end - fog_start), 0.0, 1.0);
+
 
     return out;
 }
