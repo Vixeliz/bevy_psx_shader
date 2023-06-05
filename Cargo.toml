@@ -9,5 +9,5 @@ edition = "2021"
 bevy = "0.10.1"
 
 [dev-dependencies]
-bevy_flycam = "*"
+bevy_fly_camera = "0.10.0"
 
