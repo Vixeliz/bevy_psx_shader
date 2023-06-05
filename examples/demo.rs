@@ -30,27 +30,6 @@ fn setup(
     mut materials: ResMut<Assets<PsxMaterial>>,
     asset_server: Res<AssetServer>,
 ) {
-    // camera
-    // commands.spawn((Camera3dBundle {
-    //     transform: Transform::from_translation(Vec3::new(0.0, 0.0, 5.0))
-    //         .looking_at(Vec3::default(), Vec3::Y),
-    //     camera_3d: Camera3d {
-    //         clear_color: ClearColorConfig::Custom(Color::WHITE),
-    //         ..default()
-    //     },
-    //     ..default()
-    // },));
-
-    let my_gltf = asset_server.load("3d-tileset.glb#Scene0");
-
-    // to position our 3d model, simply use the Transform
-    // in the SceneBundle
-    commands.spawn(SceneBundle {
-        scene: my_gltf,
-        transform: Transform::from_xyz(2.0, 0.0, -5.0),
-        ..Default::default()
-    });
-
     // cube
     commands.spawn((
         MaterialMeshBundle {
