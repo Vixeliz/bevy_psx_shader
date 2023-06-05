@@ -27,6 +27,7 @@ struct FragmentInput {
 
 @fragment
 fn fragment(in: FragmentInput) -> @location(0) vec4<f32> {
-    let output_color = in.vertex_color * material.color * textureSample(base_color_texture, base_color_sampler, in.uv / in.c_position.w);
-    return vec4(mix(output_color.rgb, material.fog_color.rgb, in.fog), 1.0);
+    let output_color = material.color * textureSample(base_color_texture, base_color_sampler, in.uv / in.c_position.w);
+    let final_output_color = vec4(mix(output_color.rgb, material.fog_color.rgb, in.fog), 1.0);
+    return final_output_color * in.vertex_color;
 }
