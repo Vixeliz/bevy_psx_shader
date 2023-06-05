@@ -16,6 +16,9 @@ var<uniform> material: PsxMaterial;
 
 struct Vertex {
     @location(0) position: vec4<f32>,
+    #ifdef VERTEX_COLORS
+        @location(4) color: vec4<f32>,
+    #endif
     @location(2) uv: vec2<f32>,
 };
 
@@ -24,6 +27,7 @@ struct VertexOutput {
     @location(0) c_position: vec4<f32>,
     @location(1) uv: vec2<f32>,
     @location(2) fog: f32,
+    @location(3) vertex_color: vec4<f32>,
 };
 
 @vertex
@@ -51,6 +55,11 @@ fn vertex(vertex: Vertex) -> VertexOutput {
     out.uv = vertex.uv * position.w;
     out.fog = 1.0 - clamp((material.fog_distance.y - depth) / (material.fog_distance.y - material.fog_distance.x), 0.0, 1.0);
 
-
+    #ifdef VERTEX_COLORS
+        out.vertex_color = vertex.color;
+    #else
+        out.vertex_color = vec4(1.0, 1.0, 1.0, 1.0);
+    #endif
+    
     return out;
 }
