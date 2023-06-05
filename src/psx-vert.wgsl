@@ -21,26 +21,20 @@ struct VertexOutput {
 @vertex
 fn vertex(vertex: Vertex) -> VertexOutput {
     var out: VertexOutput;
-    let grid = vec2(480.0, 360.0) * 0.5;
-    let in_clip = mesh_position_local_to_clip(mesh.model, vertex.position);
-    var snapped = in_clip;
-    snapped = vec4(
-        in_clip.x / in_clip.w,
-        in_clip.y / in_clip.w,
-        in_clip.z / in_clip.w,
-        snapped.w
+    let position_world = mesh_position_local_to_world(mesh.model, vertex.position);
+    let snap_scale = 30.0;
+    var position = vec4(
+        floor(position_world.x * snap_scale) / snap_scale,
+        floor(position_world.y * snap_scale) / snap_scale,
+        floor(position_world.z * snap_scale) / snap_scale,
+        vertex.position.w
     );
-    snapped = vec4(
-        (floor(grid * snapped.xy) / grid).x,
-        (floor(grid * snapped.xy) / grid).y,
-        snapped.z,
-        snapped.w
-    );
-    snapped *= vertex.position.w;
+
+    let in_clip = mesh_position_local_to_clip(mesh.model, position);
     
-    out.clip_position = snapped;
-    out.c_position = snapped;
-    out.uv = vertex.uv * snapped.w;
+    out.clip_position = in_clip;
+    out.c_position = in_clip;
+    out.uv = vertex.uv * in_clip.w;
 
     return out;
 }
