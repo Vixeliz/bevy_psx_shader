@@ -4,7 +4,7 @@ use bevy_psx::{camera::PsxCamera, material::PsxMaterial, PsxPlugin};
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
         .add_plugin(PsxPlugin)
         .add_plugin(FlyCameraPlugin)
         .insert_resource(Msaa::Off)
