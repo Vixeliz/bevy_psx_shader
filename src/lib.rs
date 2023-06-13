@@ -3,6 +3,7 @@ pub mod material;
 pub mod shader;
 
 use bevy::render::primitives::Aabb;
+use bevy::sprite::Material2dPlugin;
 use bevy::{
     asset::{load_internal_asset, load_internal_binary_asset},
     prelude::*,
@@ -14,7 +15,8 @@ use bevy::{
 };
 
 use crate::material::{
-    PsxMaterial, PSX_DITHER_HANDLE, PSX_FRAG_SHADER_HANDLE, PSX_VERT_SHADER_HANDLE,
+    PsxDitherMaterial, PsxMaterial, PSX_DITHER_HANDLE, PSX_DITH_SHADER_HANDLE,
+    PSX_FRAG_SHADER_HANDLE, PSX_VERT_SHADER_HANDLE,
 };
 
 pub fn image_load(bytes: &[u8]) -> Image {
@@ -39,6 +41,7 @@ pub struct PsxPlugin;
 impl Plugin for PsxPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugin(MaterialPlugin::<PsxMaterial>::default());
+        app.add_plugin(Material2dPlugin::<PsxDitherMaterial>::default());
         app.register_type::<Camera>()
             .register_type::<Visibility>()
             .register_type::<ComputedVisibility>()
@@ -55,6 +58,13 @@ impl Plugin for PsxPlugin {
             app,
             PSX_FRAG_SHADER_HANDLE,
             "psx-frag.wgsl",
+            Shader::from_wgsl
+        );
+
+        load_internal_asset!(
+            app,
+            PSX_DITH_SHADER_HANDLE,
+            "psx-dither.wgsl",
             Shader::from_wgsl
         );
 

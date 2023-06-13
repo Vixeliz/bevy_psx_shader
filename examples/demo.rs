@@ -47,8 +47,8 @@ fn setup(
             mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
             material: materials.add(PsxMaterial {
                 color_texture: Some(asset_server.load("crate.png")),
-                banding_enabled: 0,
-                dither_amount: 48.0,
+                // banding_enabled: 0,
+                // dither_amount: 48.0,
                 ..Default::default()
             }),
             transform,
