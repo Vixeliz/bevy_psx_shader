@@ -21,6 +21,8 @@ pub struct PsxCamera {
     pub fixed_axis: Option<bool>,
     pub clear_color: Color,
     pub hdr: bool,
+    pub dither_amount: f32,
+    pub banding_enabled: u32,
     init: bool,
 }
 
@@ -32,18 +34,29 @@ impl Default for PsxCamera {
             clear_color: Color::WHITE,
             init: false,
             hdr: false,
+            dither_amount: 48.0,
+            banding_enabled: 1,
         }
     }
 }
 
 impl PsxCamera {
-    pub fn new(size: UVec2, axis: Option<bool>, clear_color: Color, hdr: bool) -> Self {
+    pub fn new(
+        size: UVec2,
+        axis: Option<bool>,
+        clear_color: Color,
+        hdr: bool,
+        dither_amount: f32,
+        banding_enabled: u32,
+    ) -> Self {
         Self {
             size,
             fixed_axis: axis,
             clear_color,
             init: false,
             hdr,
+            dither_amount,
+            banding_enabled,
         }
     }
 
@@ -54,6 +67,7 @@ impl PsxCamera {
             clear_color: Color::WHITE,
             init: false,
             hdr: false,
+            ..default()
         }
     }
     pub fn from_width(width: u32) -> Self {
@@ -63,6 +77,7 @@ impl PsxCamera {
             clear_color: Color::WHITE,
             init: false,
             hdr: false,
+            ..default()
         }
     }
     pub fn from_resolution(width: u32, height: u32) -> Self {
@@ -72,6 +87,7 @@ impl PsxCamera {
             clear_color: Color::WHITE,
             init: false,
             hdr: false,
+            ..default()
         }
     }
 }
@@ -165,6 +181,8 @@ pub fn setup_camera(
                 MaterialMesh2dBundle {
                     mesh: quad_handle.into(),
                     material: materials.add(PsxDitherMaterial {
+                        dither_amount: pixel_camera.dither_amount,
+                        banding_enabled: pixel_camera.banding_enabled,
                         color_texture: Some(image_handle),
                         ..Default::default()
                     }),
